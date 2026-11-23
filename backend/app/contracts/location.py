@@ -1,0 +1,49 @@
+# =============================================================================
+# CivicSense AI — Location Contracts
+# =============================================================================
+# Pydantic schemas for location intelligence results.
+# =============================================================================
+
+from pydantic import BaseModel, Field
+
+
+class Coordinates(BaseModel):
+    """Geographic coordinates."""
+
+    latitude: float = Field(..., ge=-90.0, le=90.0, description="Latitude")
+    longitude: float = Field(..., ge=-180.0, le=180.0, description="Longitude")
+
+
+class LocationResolveRequest(BaseModel):
+    """Request payload for resolving GPS coordinates into structured location."""
+
+    latitude: float = Field(..., ge=-90.0, le=90.0, description="GPS latitude")
+    longitude: float = Field(..., ge=-180.0, le=180.0, description="GPS longitude")
+
+
+class LocationResult(BaseModel):
+    """
+    Location intelligence result — resolves GPS coordinates into
+    structured geographic context.
+    """
+
+    address: str | None = Field(default=None, description="Resolved street address, if available")
+    city: str | None = Field(default=None, description="City name, if available")
+    district: str | None = Field(default=None, description="District name, if available")
+    state: str | None = Field(default=None, description="State name, if available")
+    ward: str | None = Field(default=None, description="Ward/zone if available")
+    zone: str | None = Field(default=None, description="Administrative zone if available")
+    pincode: str | None = Field(default=None, description="Postal code if available")
+    coordinates: Coordinates = Field(..., description="Original GPS coordinates")
+    confidence: float = Field(
+        ..., ge=0.0, le=1.0,
+        description="Confidence in the resolved location",
+    )
+    source: str = Field(
+        default="mock",
+        description="Result source: 'mock' | 'geocoding_api' | 'nominatim' | etc.",
+    )
+    attribution: str | None = Field(
+        default=None,
+        description="Required attribution text for the geocoding data source, when applicable",
+    )
