@@ -394,7 +394,7 @@ pytest tests/ -v
 
 # 👨‍💻 Author
 
-**Arpit Pandey**  
+**Aashish**  
 B.Tech Computer Science Engineering  
 *Artificial Intelligence • Computer Vision • Full-Stack Engineering • Distributed Systems*
 
